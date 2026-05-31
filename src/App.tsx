@@ -447,6 +447,124 @@ function SpaceBackground3D() {
   );
 }
 
+// --- DYNAMIC INTERACTIVE 3D SPACE BACKGROUND ONLY FOR LOGIN MODAL ---
+function LocalSpaceBackground() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const canvas = canvasRef.current;
+    if (!container || !canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let animationFrameId: number;
+
+    const starCount = 60;
+    const stars: { x: number; y: number; z: number; size: number; baseColor: string; speedMult: number }[] = [];
+    const colors = ["#ffffff", "#ea384c", "#fcc97c", "#9252f5", "#4fa0d0"];
+
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: (Math.random() - 0.5) * 800,
+        y: (Math.random() - 0.5) * 800,
+        z: Math.random() * 1000 + 40,
+        size: Math.random() * 1.5 + 0.4,
+        baseColor: colors[Math.floor(Math.random() * colors.length)],
+        speedMult: Math.random() * 0.4 + 0.8
+      });
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        width = canvas.width = entry.contentRect.width;
+        height = canvas.height = entry.contentRect.height;
+      }
+    });
+
+    resizeObserver.observe(container);
+
+    let time = 0;
+
+    const render = () => {
+      time += 0.0015;
+
+      // Dark space backdrop
+      ctx.fillStyle = "rgba(7, 7, 10, 0.5)";
+      ctx.fillRect(0, 0, width, height);
+
+      // Perspective variables
+      const fov = 200;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      // Dynamic rotation angle around depth axis for continuous 3D rotation
+      const driftAngle = time * 0.12;
+      const cosAngle = Math.cos(driftAngle);
+      const sinAngle = Math.sin(driftAngle);
+
+      stars.forEach((star) => {
+        // Star speed travels depthwards
+        star.z -= 0.5 * star.speedMult;
+
+        // Reset if we pass the viewport limits
+        if (star.z <= 0) {
+          star.z = 1000;
+          star.x = (Math.random() - 0.5) * 800;
+          star.y = (Math.random() - 0.5) * 800;
+          star.speedMult = Math.random() * 0.4 + 0.8;
+        }
+
+        // Apply a slow, organic 3D rotational shift to coordinates
+        const rx = star.x * cosAngle - star.y * sinAngle;
+        const ry = star.x * sinAngle + star.y * cosAngle;
+
+        // Project onto 2D viewport
+        const px = (rx * fov) / star.z + centerX;
+        const py = (ry * fov) / star.z + centerY;
+
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
+          const size = star.size * (fov / star.z) * 1.5;
+          let opacity = (1000 - star.z) / 1000;
+          
+          if (star.z < 100) {
+            opacity *= (star.z / 100);
+          }
+
+          // Twinkle effect
+          const twinkle = Math.abs(Math.sin(time * 12 + star.x * 0.01));
+          ctx.globalAlpha = Math.max(0, Math.min(1, opacity * (0.4 + twinkle * 0.6)));
+          
+          ctx.fillStyle = star.baseColor;
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.3, Math.min(size, 3.5)), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      ctx.globalAlpha = 1.0;
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 bg-[#07070a]">
+      <canvas ref={canvasRef} className="block w-full h-full" style={{ mixBlendMode: "screen" }} />
+    </div>
+  );
+}
+
 // --- FIRESTORE ROOT UTILITIES FOR DEEP SECURITY AND INTERACTIONS ---
 enum OperationType {
   CREATE = 'create',
@@ -2671,52 +2789,8 @@ export default function App() {
               </div>
 
               {/* RIGHT COLUMN: Splendid animated deep Space visuals layout and concept */}
-              <div className="hidden md:flex col-span-6 relative bg-[#040406] overflow-hidden flex-col items-center justify-center p-10 text-center border-l border-white/5 select-none">
-                {/* Micro stars and floating icons representing universe */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
-                  <div className="absolute top-[12%] left-[10%] text-xl animate-float-1">⭐</div>
-                  <div className="absolute bottom-[16%] right-[10%] text-lg animate-float-3">✨</div>
-                  <div className="absolute top-[65%] left-[15%] text-xs animate-float-2 opacity-50">☄️</div>
-                  <div className="absolute top-[35%] right-[15%] text-sm animate-float-1 opacity-20">🪐</div>
-                </div>
-
-                {/* Subtle rich cosmic overlays */}
-                <div className="absolute w-80 h-80 rounded-full bg-accent-red/10 blur-[90px] -top-16 -right-16 pointer-events-none" />
-                <div className="absolute w-80 h-80 rounded-full bg-accent-purple/10 blur-[90px] -bottom-16 -left-16 pointer-events-none" />
-
-                {/* Elegant central glossy deep space cosmos representation */}
-                <div className="relative w-48 h-48 mb-8 flex items-center justify-center">
-                  {/* Glowing core representing a cosmic galaxy center or nebula */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-accent-red/20 via-accent-gold/25 to-accent-purple/30 blur-3xl animate-pulse" />
-                  
-                  {/* Multi-layered sparkling orbits */}
-                  <div className="absolute w-44 h-44 rounded-full border border-dashed border-accent-gold/25 animate-[spin_40s_linear_infinite]" />
-                  <div className="absolute w-36 h-36 rounded-full border border-double border-accent-purple/30 animate-[spin_24s_linear_infinite_reverse]" />
-                  <div className="absolute w-28 h-28 rounded-full border border-white/5 animate-[spin_12s_linear_infinite]" />
-                  
-                  {/* Center glowing golden/accent cosmic star core */}
-                  <div className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-[#9252f5] via-[#ea384c] to-[#fcc97c] shadow-[0_0_50px_rgba(234,56,76,0.4)] flex items-center justify-center animate-breathe-slow">
-                    <div className="absolute inset-[2px] rounded-full bg-bg-dark flex items-center justify-center">
-                      <Sparkles className="w-6 h-6 text-accent-gold animate-pulse" />
-                    </div>
-                  </div>
-
-                  {/* Tiny sparkling satellite points orbiting the core */}
-                  <div className="absolute top-[10%] left-[20%] w-1.5 h-1.5 rounded-full bg-white opacity-80 animate-ping" />
-                  <div className="absolute bottom-[15%] right-[25%] w-1 h-1 rounded-full bg-accent-gold opacity-60 animate-pulse" />
-                  <div className="absolute bottom-[30%] left-[10%] w-2 h-2 rounded-full bg-accent-purple/60 opacity-40 shrink-0" />
-                </div>
-
-                {/* Poetry Overlay text */}
-                <div className="relative z-10 space-y-2 px-2">
-                  <h4 className="text-xl sm:text-2xl font-serif font-black text-white leading-tight">
-                    "Vesmír mlčí. <br />Ale ty nemusíš."
-                  </h4>
-                  <div className="w-8 h-[2px] bg-accent-red mx-auto my-3" />
-                  <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-accent-gold font-bold">
-                    Tvůj hlas má hodnotu
-                  </p>
-                </div>
+              <div className="hidden md:block col-span-6 relative overflow-hidden border-l border-white/5 select-none min-h-[400px]">
+                <LocalSpaceBackground />
               </div>
             </motion.div>
           </div>
