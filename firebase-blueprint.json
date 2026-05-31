@@ -1,0 +1,62 @@
+{
+  "entities": {
+    "opinion": {
+      "title": "Opinion",
+      "description": "An anonymous note, story, or opinion posted in the discussion section.",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The description body text of the opinion/story"
+        },
+        "authorName": {
+          "type": "string",
+          "description": "The name of the user or 'Anonym'"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["opinion", "note", "story"],
+          "description": "The segment category"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The exact creation timestamp verified by the Firestore server time"
+        },
+        "userId": {
+          "type": "string",
+          "description": "The unique Firebase Authentication UID of the poster"
+        }
+      },
+      "required": ["text", "authorName", "category", "createdAt", "userId"]
+    },
+    "vote": {
+      "title": "Vote",
+      "description": "An interactive dilemma vote entry.",
+      "type": "object",
+      "properties": {
+        "choice": {
+          "type": "string",
+          "enum": ["silence", "voice"],
+          "description": "The choice selected (silence or voice)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The creation timestamp"
+        }
+      },
+      "required": ["choice", "createdAt"]
+    }
+  },
+  "firestore": {
+    "opinions/{opinionId}": {
+      "schema": "opinion",
+      "description": "Public discussion board entries"
+    },
+    "votes/{voteId}": {
+      "schema": "vote",
+      "description": "Real-time user dilemma votes"
+    }
+  }
+}

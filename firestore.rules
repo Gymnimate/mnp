@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global safety net (Default-deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper utilities
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidOpinion(data) {
+      return data.keys().hasAll(['text', 'authorName', 'category', 'createdAt', 'userId'])
+        && data.keys().size() == 5
+        && data.text is string 
+        && data.text.size() > 0 
+        && data.text.size() <= 2000
+        && data.authorName is string 
+        && data.authorName.size() <= 100
+        && data.category is string 
+        && (data.category == 'opinion' || data.category == 'note' || data.category == 'story')
+        && data.createdAt == request.time
+        && data.userId == request.auth.uid;
+    }
+
+    // Opinions collection matching
+    match /opinions/{opinionId} {
+      allow read, list: if true;
+      allow create: if request.auth != null && isValidId(opinionId) && isValidOpinion(incoming());
+      allow update: if false;
+      allow delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    function isValidVote(data) {
+      return data.keys().hasAll(['choice', 'createdAt'])
+        && data.keys().size() == 2
+        && (data.choice == 'silence' || data.choice == 'voice')
+        && data.createdAt == request.time;
+    }
+
+    // Votes collection matching
+    match /votes/{voteId} {
+      allow read, list: if true;
+      allow create: if isValidId(voteId) && isValidVote(incoming());
+      allow update, delete: if false;
+    }
+  }
+}

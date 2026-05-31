@@ -1,0 +1,8 @@
+{
+  "name": "Mlčet, nebo promluvit?",
+  "description": "Interaktivní zamyšlení nad silou hlasu, tichým souhlasem a osobní odpovědností v moderním světě.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
