@@ -43,7 +43,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Build static files
-        run: npm run build -- --base=${{ steps.pages.outputs.base_path }}/
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
