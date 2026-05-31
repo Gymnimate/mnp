@@ -492,33 +492,38 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
     path
   };
   console.error('Firestore Error: ', JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
 }
 
 // Highly descriptive relative Czech time-stamp parser
 function formatCzechDate(timestamp: any) {
   if (!timestamp) return "právě teď";
-  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMins / 3600000);
-  
-  if (diffMins < 1) return "právě teď";
-  if (diffMins < 60) return `před ${diffMins} min.`;
-  if (diffHours < 24) {
-    if (diffHours === 1) return "před hodinou";
-    if (diffHours < 5) return `před ${diffHours} hodinami`;
-    return `před ${diffHours} hod.`;
+  try {
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    if (isNaN(date.getTime())) return "právě teď";
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    
+    if (diffMins < 1) return "právě teď";
+    if (diffMins < 60) return `před ${diffMins} min.`;
+    if (diffHours < 24) {
+      if (diffHours === 1) return "před hodinou";
+      if (diffHours < 5) return `před ${diffHours} hodinami`;
+      return `před ${diffHours} hod.`;
+    }
+    
+    return date.toLocaleDateString("cs-CZ", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  } catch (err) {
+    console.error("Error formatting date:", err);
+    return "právě teď";
   }
-  
-  return date.toLocaleDateString("cs-CZ", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
 }
 
 export default function App() {
