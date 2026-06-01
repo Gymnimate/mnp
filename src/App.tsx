@@ -1706,18 +1706,18 @@ export default function App() {
             >
               <div className="hidden md:block col-span-5 text-right space-y-2">
                 <span className="font-serif text-3xl font-bold text-accent-gold">1938</span>
-                <h4 className="text-lg font-bold text-text-light font-sans">Mnichovská dohoda a tiché lhostejno</h4>
+                <h4 className="text-lg font-bold text-text-light font-sans">Mnichovská dohoda a tichá lhostejnost</h4>
                 <p className="text-sm text-text-muted leading-relaxed">
-                  Když tehdejší evropské mocnosti v naději na uchování vlastního klidu mlčely k porušení sovereignty Československa, dali tím agresorovi signál, že mohou postupovat dál. Tento tichý ústupek stál životy desítek milionů lidí v následné světové válce.
+                  Když tehdejší evropské mocnosti v naději na uchování vlastního klidu mlčely k porušení suverenity Československa, daly tím agresorovi signál, že může postupovat dál. Tento tichý ústupek stál životy desítek milionů lidí v následné světové válce.
                 </p>
               </div>
               <div className="absolute left-0 translate-x-[-31px] md:left-1/2 md:-translate-x-1/2 z-20 w-4 h-4 rounded-full bg-accent-red border-4 border-bg-dark ring-4 ring-accent-red/20 shadow-lg" />
               <div className="md:col-span-2" />
               <div className="col-span-12 md:col-span-5 space-y-2 md:hidden">
                 <span className="font-serif text-2xl font-bold text-accent-gold">1938</span>
-                <h4 className="text-lg font-bold text-text-light">Mnichovská dohoda a tiché lhostejno</h4>
+                <h4 className="text-lg font-bold text-text-light">Mnichovská dohoda a tichá lhostejnost</h4>
                 <p className="text-sm text-text-muted leading-relaxed">
-                  Když tehdejší evropské mocnosti v naději na uchování vlastního klidu mlčely k porušení sovereignty Československa, dali tím agresorovi signál, že mohou postupovat dál. Tento tichý ústupek stál životy desítek milionů lidí v následné světové válce.
+                  Když tehdejší evropské mocnosti v naději na uchování vlastního klidu mlčely k porušení suverenity Československa, daly tím agresorovi signál, že může postupovat dál. Tento tichý ústupek stál životy desítek milionů lidí v následné světové válce.
                 </p>
               </div>
             </motion.div>
@@ -2228,7 +2228,7 @@ export default function App() {
           <div className="space-y-4">
             <AccordionItem
               title="Je správné se ozvat vždycky a za každou cenu?"
-              content="Morálka by neměla ignorovat pud sebezáchovy. Pokud čelní konfrontace bezprostředně ohrožuje vaše fyzické bezpečí, zvolte nepřímou cestu: volejte tísňovou linku, přizvěte kolemjdoucí lidi, zaangažujte ostrahu prostoru, nebo oslovte oběť a odveďte ji pryč. Nejdůležitější je nerezignovat na lhostejnost."
+              content="Morálka by neměla ignorovat pud sebezáchovy. Pokud čelní konfrontace bezprostředně ohrožuje vaše fyzické bezpečí, zvolte nepřímou cestu: volejte tísňovou linku, přizvěte kolemjdoucí lidi, zaangažujte ostrahu prostoru, nebo oslovte oběť a odveďte ji pryč. Nejdůležitější je nepodlehnout lhostejnosti."
               isOpen={openAccordionIndex === 0}
               onToggle={() => handleToggleAccordion(0)}
             />
