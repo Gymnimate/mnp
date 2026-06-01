@@ -644,6 +644,16 @@ function formatCzechDate(timestamp: any) {
   }
 }
 
+const navigationItems = [
+  { id: "intro", label: "Úvod", href: "#intro" },
+  { id: "dilema", label: "Dilema", href: "#dilema" },
+  { id: "historie", label: "Historie", href: "#historie" },
+  { id: "dnes", label: "Svět", href: "#dnes" },
+  { id: "faq", label: "FAQ", href: "#faq" },
+  { id: "akce", label: "Kroky", href: "#akce" },
+  { id: "diskuze", label: "Diskuze", href: "#diskuze" },
+];
+
 export default function App() {
   const [activeTab, setActiveTab] = useState<"ticho" | "strach" | "spolecenstvi">("ticho");
   const [pollChoice, setPollChoice] = useState<"silence" | "voice" | null>(null);
@@ -934,7 +944,7 @@ export default function App() {
       setScrolled(window.scrollY > 40);
 
       // Active section highlight (scrollspy)
-      const sections = ["hero-id", "intro", "dilema", "historie", "dnes", "akce", "faq", "diskuze"];
+      const sections = ["hero-id", "intro", "dilema", "historie", "dnes", "faq", "akce", "diskuze"];
       const scrollPosition = window.scrollY + 250;
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -1098,70 +1108,30 @@ export default function App() {
           </a>
 
           {/* Desktop Navigation Links (with scrollspy highlight) */}
-          <ul className="nav-links hidden md:flex">
-            <li>
-              <a 
-                href="#intro" 
-                onClick={(e) => handleLinkClick(e, "intro")}
-                className={activeSection === "intro" ? "active" : ""}
-              >
-                Úvod
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#dilema" 
-                onClick={(e) => handleLinkClick(e, "dilema")}
-                className={activeSection === "dilema" ? "active" : ""}
-              >
-                Dilema
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#historie" 
-                onClick={(e) => handleLinkClick(e, "historie")}
-                className={activeSection === "historie" ? "active" : ""}
-              >
-                Historie
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#dnes" 
-                onClick={(e) => handleLinkClick(e, "dnes")}
-                className={activeSection === "dnes" ? "active" : ""}
-              >
-                Svět
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#akce" 
-                onClick={(e) => handleLinkClick(e, "akce")}
-                className={activeSection === "akce" ? "active" : ""}
-              >
-                Kroky
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#faq" 
-                onClick={(e) => handleLinkClick(e, "faq")}
-                className={activeSection === "faq" ? "active" : ""}
-              >
-                FAQ
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#diskuze" 
-                onClick={(e) => handleLinkClick(e, "diskuze")}
-                className={activeSection === "diskuze" ? "active" : ""}
-              >
-                Diskuze
-              </a>
-            </li>
+          <ul className="hidden md:flex items-center gap-1 relative list-none m-0 p-0">
+            {navigationItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <li key={item.id} className="relative py-1">
+                  <a 
+                    href={item.href} 
+                    onClick={(e) => handleLinkClick(e, item.id)}
+                    className={`relative z-10 block font-display text-[11px] font-semibold tracking-wider uppercase text-center transition-colors duration-300 px-4 py-2 rounded-full cursor-pointer select-none ${
+                      isActive ? "text-accent-red" : "text-text-muted hover:text-text-light"
+                    }`}
+                  >
+                    {item.label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="active-nav-glow"
+                        className="absolute inset-0 bg-accent-red/[0.08] border border-accent-red/20 rounded-full -z-10 shadow-[0_0_12px_rgba(234,56,76,0.08)]"
+                        transition={{ type: "spring", stiffness: 380, damping: 28 }}
+                      />
+                    )}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Controls Right Section (Hamburger toggle and Auth) */}
@@ -1229,70 +1199,25 @@ export default function App() {
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="md:hidden overflow-hidden bg-bg-dark/95 backdrop-blur-xl border-b border-white/5 absolute top-full left-0 w-full"
             >
-              <ul className="px-6 py-8 space-y-5 text-center flex flex-col items-center">
-                <li>
-                  <a 
-                    href="#intro" 
-                    onClick={(e) => handleLinkClick(e, "intro")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "intro" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    Úvod
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#dilema" 
-                    onClick={(e) => handleLinkClick(e, "dilema")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "dilema" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    Dilema
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#historie" 
-                    onClick={(e) => handleLinkClick(e, "historie")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "historie" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    Historie
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#dnes" 
-                    onClick={(e) => handleLinkClick(e, "dnes")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "dnes" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    Moderní svět
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#akce" 
-                    onClick={(e) => handleLinkClick(e, "akce")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "akce" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    Kroky
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#faq" 
-                    onClick={(e) => handleLinkClick(e, "faq")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "faq" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#diskuze" 
-                    onClick={(e) => handleLinkClick(e, "diskuze")} 
-                    className={`block text-sm uppercase tracking-widest font-bold ${activeSection === "diskuze" ? "text-accent-red" : "text-text-muted"}`}
-                  >
-                    Diskuze
-                  </a>
-                </li>
+              <ul className="px-6 py-8 space-y-4 text-center flex flex-col items-center w-full">
+                {navigationItems.map((item) => {
+                  const isActive = activeSection === item.id;
+                  return (
+                    <li key={item.id} className="w-full max-w-[200px] relative">
+                      <a 
+                        href={item.href} 
+                        onClick={(e) => handleLinkClick(e, item.id)} 
+                        className={`block py-2 text-sm uppercase tracking-widest font-bold rounded-xl transition-all duration-300 relative ${
+                          isActive 
+                            ? "text-accent-red bg-accent-red/[0.06] border border-accent-red/20 shadow-[0_0_12px_rgba(234,56,76,0.06)]" 
+                            : "text-text-muted hover:text-text-light hover:bg-white/[0.02]"
+                        }`}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </motion.div>
           )}
@@ -1356,18 +1281,18 @@ export default function App() {
             Když mlčíš, dáváš najevo souhlas. Mlčení není neutralita — je to volba. A každá volba má své dalekosáhlé důsledky.
           </motion.p>
 
-          <motion.div variants={fuaItem} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <motion.div variants={fuaItem} className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
             <a 
               href="#intro" 
               onClick={(e) => handleLinkClick(e, "intro")}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-accent-red to-[#c1121f] hover:from-accent-red hover:to-[#c1121f] text-white rounded-full font-bold tracking-wider text-xs uppercase shadow-lg shadow-accent-red/30 hover:shadow-accent-red/50 hover:-translate-y-1 transition-all duration-300 text-center cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-accent-red to-[#c1121f] hover:from-accent-red hover:to-[#c1121f] text-white rounded-full font-bold tracking-wider text-xs uppercase shadow-lg shadow-accent-red/20 hover:shadow-accent-red/40 hover:-translate-y-0.5 transition-all duration-300 text-center cursor-pointer"
             >
               Pochopit téma
             </a>
             <a 
               href="#dnes" 
               onClick={(e) => handleLinkClick(e, "dnes")}
-              className="w-full sm:w-auto px-8 py-4 bg-white/[0.03] hover:bg-white/[0.08] text-white border border-white/10 hover:border-white/30 rounded-full font-bold tracking-wider text-xs uppercase hover:-translate-y-1 transition-all duration-300 text-center cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 bg-white/[0.02] hover:bg-white/[0.06] text-white border border-white/10 hover:border-white/20 rounded-full font-bold tracking-wider text-xs uppercase hover:-translate-y-0.5 transition-all duration-300 text-center cursor-pointer"
             >
               Moderní svět
             </a>
@@ -2411,7 +2336,7 @@ export default function App() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left Column: Form Card with Authentication */}
-            <div className="lg:col-span-5 bg-[#0b0b10] border border-white/5 rounded-3xl p-6 md:p-8 space-y-6 sticky top-24">
+            <div className="lg:col-span-5 bg-[#0b0b10]/90 md:bg-[#0b0b10] border border-white/5 rounded-3xl p-6 md:p-8 space-y-6 lg:sticky lg:top-24 z-10">
               <div className="flex items-center justify-between border-b border-white/[0.04] pb-4">
                 <h3 className="text-xl font-bold text-text-light flex items-center gap-2">
                   <PenTool className="w-4 h-4 text-accent-red" />
