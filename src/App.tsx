@@ -645,7 +645,7 @@ function formatCzechDate(timestamp: any) {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<"tišina" | "strach" | "spolecenstvi">("tišina");
+  const [activeTab, setActiveTab] = useState<"ticho" | "strach" | "spolecenstvi">("ticho");
   const [pollChoice, setPollChoice] = useState<"silence" | "voice" | null>(null);
   const [pollVotes, setPollVotes] = useState<{ silence: number, voice: number }>({ silence: 0, voice: 0 });
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
@@ -989,10 +989,10 @@ export default function App() {
     }
   };
 
-  const handleTabChange = (tab: "tišina" | "strach" | "spolecenstvi") => {
+  const handleTabChange = (tab: "ticho" | "strach" | "spolecenstvi") => {
     setActiveTab(tab);
     if (audioEnabled) {
-      if (tab === "tišina") {
+      if (tab === "ticho") {
         audioSynth.playHumSlide(240, 52);
       } else if (tab === "strach") {
         audioSynth.playHumSlide(150, 100);
@@ -1511,45 +1511,45 @@ export default function App() {
           </div>
 
           {/* Interactive Navigation Elements for Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2.5 mb-12">
             <button
-              onClick={() => handleTabChange("tišina")}
-              className={`px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                activeTab === "tišina" 
-                  ? "bg-accent-red text-white shadow-lg shadow-accent-red/30 border border-accent-red" 
-                  : "bg-white/[0.02] text-text-muted border border-white/5 hover:text-text-light hover:border-white/20"
+              onClick={() => handleTabChange("ticho")}
+              className={`px-4.5 py-2 md:py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer flex items-center gap-2 ${
+                activeTab === "ticho" 
+                  ? "bg-accent-red/10 text-accent-red border border-accent-red/50 shadow-[0_0_15px_rgba(234,56,76,0.15)]" 
+                  : "bg-white/[0.01] text-text-muted border border-white/5 hover:text-text-light hover:border-white/15 hover:bg-white/[0.02]"
               }`}
             >
-              🤫 Tišina není neutrální
+              <span>🤫</span> Ticho není neutrální
             </button>
             <button
               onClick={() => handleTabChange("strach")}
-              className={`px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+              className={`px-4.5 py-2 md:py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer flex items-center gap-2 ${
                 activeTab === "strach" 
-                  ? "bg-accent-red text-white shadow-lg shadow-accent-red/30 border border-accent-red" 
-                  : "bg-white/[0.02] text-text-muted border border-white/5 hover:text-text-light hover:border-white/20"
+                  ? "bg-accent-red/10 text-accent-red border border-accent-red/50 shadow-[0_0_15px_rgba(234,56,76,0.15)]" 
+                  : "bg-white/[0.01] text-text-muted border border-white/5 hover:text-text-light hover:border-white/15 hover:bg-white/[0.02]"
               }`}
             >
-              😟 Strach z následků
+              <span>😟</span> Strach z následků
             </button>
             <button
               onClick={() => handleTabChange("spolecenstvi")}
-              className={`px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+              className={`px-4.5 py-2 md:py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 cursor-pointer flex items-center gap-2 ${
                 activeTab === "spolecenstvi" 
-                  ? "bg-accent-red text-white shadow-lg shadow-accent-red/30 border border-accent-red" 
-                  : "bg-white/[0.02] text-text-muted border border-white/5 hover:text-text-light hover:border-white/20"
+                  ? "bg-accent-red/10 text-accent-red border border-accent-red/50 shadow-[0_0_15px_rgba(234,56,76,0.15)]" 
+                  : "bg-white/[0.01] text-text-muted border border-white/5 hover:text-text-light hover:border-white/15 hover:bg-white/[0.02]"
               }`}
             >
-              ✊ Společenská kultura
+              <span>✊</span> Společenská kultura
             </button>
           </div>
 
           {/* Tab content renderer with beautiful micro anims */}
           <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 sm:p-10 lg:p-12 relative overflow-hidden min-h-[420px]">
             <AnimatePresence mode="wait">
-              {activeTab === "tišina" && (
+              {activeTab === "ticho" && (
                 <motion.div
-                  key="tišina-tab"
+                  key="ticho-tab"
                   initial={{ opacity: 0, scale: 0.98, y: 15 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.98, y: -15 }}
