@@ -2135,6 +2135,46 @@ export default function App() {
         </div>
       </section>
 
+      {/* --- VIDEO SECTION --- */}
+      <section id="video" className="py-20 md:py-28 bg-bg-dark border-t border-white/5 scroll-mt-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto space-y-4 mb-12 animate-on-view">
+            <span className="text-xs uppercase tracking-widest text-[#e63946] font-semibold block tracking-widest font-sans">Video k zamyšlení</span>
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-text-light">
+              Mlčení, strach a lhostejnost
+            </h2>
+            <div className="w-16 h-[2px] bg-accent-red mx-auto rounded-full" />
+            <p className="text-text-muted leading-relaxed text-sm">
+              Názorné vysvětlení o tom, co s námi i s druhými dělá ticho ve chvílích, kdy je potřeba promluvit.
+            </p>
+          </div>
+
+          {/* Video player card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative bg-white/[0.01] border border-white/5 p-2 sm:p-2.5 rounded-3xl overflow-hidden group shadow-[0_0_50px_rgba(234,56,76,0.02)] hover:border-white/10 transition-all duration-500 max-w-3xl mx-auto"
+          >
+            {/* Ambient background glow */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-accent-red/5 to-accent-gold/5 rounded-3xl blur-xl opacity-35 group-hover:opacity-60 transition duration-1000" />
+            
+            <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/60 border border-white/5">
+              <iframe
+                id="yt-video-player"
+                src="https://www.youtube.com/embed/Qxoq-vV2mWo"
+                title="Svědectví o tichu"
+                className="absolute inset-0 w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* --- FAQ SECTION WITH SMOOTH SLIDE-DOWN ACCORDIONS --- */}
       <section id="faq" className="py-24 md:py-36 bg-bg-section/80 border-t border-white/5 scroll-mt-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
